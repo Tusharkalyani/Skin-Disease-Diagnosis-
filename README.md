@@ -12,6 +12,8 @@ The dataset for this project comprises hundreds of images featuring various type
 We developed our skin disease diagnosis model using TensorFlow and implemented the Keras API for streamlined model building and training. The model achieved a commendable accuracy of 87% on the test set.
 
 Used Technologies
+<img width="386" height="48" alt="image" src="https://github.com/user-attachments/assets/1f431a37-8d6d-4b1e-8a2e-0a945910d526" />
+
 
 My Skills
 
