@@ -1,0 +1,442 @@
+<!-- x<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Disease Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .upload-box {
+            margin-bottom: 20px;
+        }
+        input[type="file"] {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .image-preview {
+            margin-top: 20px;
+        }
+        .dimensions {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Skin Disease Finding Web App!!!</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="upload-box">
+                <label for="uploadImage">Image Upload:</label>
+                <input type="file" id="uploadImage" name="uploadImage" accept="image/*" required>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+        <hr>
+        <div class="image-preview">
+            {% if img %}
+                <img id="uploadedImage" src="{{ img }}" alt="No Image loaded" height="500px" width="500px">
+                <div id="imageDimensions" class="dimensions"></div>
+            {% endif %}
+        </div>
+    </div>   -->
+ <!--  <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Skin Disease Detection</title>
+        <style>
+            /* General styles */
+            body {
+                font-family: 'Arial', sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f7fc;
+                color: #333;
+                line-height: 1.6;
+            }
+            
+            h1, h2 {
+                font-family: 'Segoe UI', sans-serif;
+                color: #3b3f43;
+            }
+    
+            .container {
+                max-width: 800px;
+                margin: 40px auto;
+                padding: 30px;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                text-align: center;
+            }
+    
+            h1 {
+                font-size: 2.2em;
+                margin-bottom: 20px;
+                color: #28a745;
+            }
+    
+            /* Form and Upload Styles */
+            .upload-box {
+                margin-bottom: 20px;
+            }
+    
+            label {
+                font-size: 1.1em;
+                margin-bottom: 8px;
+                display: block;
+                color: #444;
+            }
+    
+            input[type="file"] {
+                padding: 10px;
+                width: 100%;
+                border: 2px solid #ddd;
+                border-radius: 5px;
+                background-color: #f9f9f9;
+                font-size: 1em;
+            }
+    
+            button {
+                padding: 12px 25px;
+                background-color: #28a745;
+                color: white;
+                font-size: 1.2em;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+    
+            button:hover {
+                background-color: #218838;
+            }
+    
+            /* Image Preview */
+            .image-preview {
+                margin-top: 30px;
+                text-align: center;
+            }
+    
+            img {
+                border-radius: 8px;
+                max-width: 100%;
+                height: auto;
+            }
+    
+            /* Dimensions Section Styling */
+            .dimensions {
+                margin-top: 20px;
+                padding: 15px;
+                background-color: #f1f1f1;
+                border-radius: 5px;
+                text-align: left;
+                font-size: 1.1em;
+                color: #555;
+                box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            }
+    
+            .dimension-row {
+                font-size: 1.2em;
+                margin-bottom: 10px;
+                padding: 5px;
+                background-color: #e9f5e9;
+                border-radius: 4px;
+            }
+    
+            .dimension-row:last-child {
+                margin-bottom: 0;
+            }
+    
+            /* Responsive Design */
+            @media (max-width: 768px) {
+                .container {
+                    padding: 20px;
+                }
+    
+                h1 {
+                    font-size: 1.8em;
+                }
+    
+                button {
+                    font-size: 1em;
+                    padding: 10px 20px;
+                }
+            }
+    
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Welcome to the Skin Disease Detection Web App!</h1>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="upload-box">
+                    <label for="uploadImage">Upload an Image for Analysis:</label>
+                    <input type="file" id="uploadImage" name="uploadImage" accept="image/*" required>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+            <hr>
+            <div class="image-preview">
+                {% if img %}
+                    <h2>Orginal Image:</h2>
+                    <img id="uploadedImage" src="{{ img }}" alt="No Image loaded">
+                    <h2>Detected Area:</h2>
+                    <img id="processedImage" src="{{ processed_img }}" alt="Processed Image">
+                    <h2>Dimensions:</h2>
+                    <div id="imageDimensions" class="dimensions">
+                        {% for row in dimensions %}
+                            <div class="dimension-row">
+                                [{{ row.0 }} {{ row.1 }} {{ row.2 }}]
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </body>
+    </html>
+    --> 
+    <!--<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Skin Disease Finding Web App</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f9f9f9;
+                color: #333;
+            }
+            h1 {
+                text-align: center;
+                color: #4CAF50;
+                margin-top: 20px;
+            }
+            form {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin: 20px;
+                padding: 20px;
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            form input[type="file"] {
+                margin: 10px 0;
+            }
+            form button {
+                padding: 10px 20px;
+                background-color: #4CAF50;
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+            form button:hover {
+                background-color: #45a049;
+            }
+            hr {
+                border: none;
+                height: 1px;
+                background-color: #ddd;
+                margin: 20px 0;
+            }
+            div {
+                text-align: center;
+                margin: 20px;
+                padding: 20px;
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            img {
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                margin-top: 20px;
+            }
+            h2 {
+                color: #333;
+            }
+            h3 {
+                color: #555;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Welcome to Skin Disease Finding Web App!!!</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="uploadImage">Image Upload:</label>
+            <input type="file" name="uploadImage" id="uploadImage"><br>
+            <button type="submit">Submit</button>
+        </form>
+        <hr>
+        <div>
+            {% if img %}
+                <img src="{{img}}" alt="No Image loaded" height="500px" width="500px">
+            {% endif %}
+        </div>
+        <hr>
+        <div>
+            <h2>Skin Disease Result:</h2>
+            {% if obj1 %}
+            <h3>{{ obj1 }}</h3>
+            {% endif %}
+        </div>
+        <hr>
+        <div>
+            <h2>Diagnosis Result:</h2>
+            {% if obj2 %}
+                <h3>{{ obj2 }}</h3>
+            {% endif %}
+        </div>
+    </body>
+    </html>
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Disease Finding Web App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            margin-top: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        form input[type="file"] {
+            margin: 10px 0;
+        }
+        form button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        form button:hover {
+            background-color: #45a049;
+        }
+        hr {
+            border: none;
+            height: 1px;
+            background-color: #ddd;
+            margin: 20px 0;
+        }
+        div {
+            text-align: center;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        img {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        h3 {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Skin Disease Finding Web App!!!</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="uploadImage">Image Upload:</label>
+        <input type="file" name="uploadImage" id="uploadImage"><br>
+        <button type="submit">Submit</button>
+    </form>
+    <hr>
+    <div>
+        {% if img_url %}
+            <img src="{{ img_url }}" alt="Uploaded Image" height="500px" width="500px">
+        {% else %}
+            <p>No image uploaded yet.</p>
+        {% endif %}
+    </div>
+    <hr>
+    <div>
+        <h2>Skin Disease Result:</h2>
+        {% if obj1 %}
+            <h3>{{ obj1 }}</h3>
+        {% else %}
+            <p>No prediction available.</p>
+        {% endif %}
+    </div>
+    <hr>
+    <div>
+        <h2>Diagnosis Result:</h2>
+        {% if obj2 %}
+            <h3>{{ obj2 }}</h3>
+        {% else %}
+            <p>No diagnosis available.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
